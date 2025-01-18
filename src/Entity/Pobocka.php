@@ -5,6 +5,8 @@ namespace App\Entity;
 
 use App\Repository\PobockaRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: PobockaRepository::class)]
 
@@ -12,7 +14,7 @@ class Pobocka{
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private int $id_pobocka;
+    private int $id;
 
     #[ORM\Column]
     private int $cislo_popisne;
@@ -29,8 +31,27 @@ class Pobocka{
     #[ORM\Column(length: 255)]
     private string $jmeno_vedouciho;
 
-    public function getIdPobocka(): ?int{
-        return $this->id_pobocka;
+    #[ORM\OneToMany(targetEntity: Zamestnanec::class, mappedBy: 'pobocka')]
+    private $zamestnanci;
+
+    public function __construct(){
+        $this->zamestnanci = new ArrayCollection();
+    }
+
+    public function getZamestnanci(): Collection{
+        return $this->zamestnanci;
+    }
+
+    public function addZamestnanec(Zamestnanec $zamestnanec){
+        $this->zamestnanci->add($zamestnanec);
+    }
+
+    public function removeZamestnanec(Zamestnanec $zamestnanec){
+        $this->zamestnanci->remove($zamestnanec);
+    }
+
+    public function getId(): ?int{
+        return $this->id;
     }
 
     public function getCisloPopisne(): ?int{
@@ -53,8 +74,8 @@ class Pobocka{
         return $this->jmeno_vedouciho;
     }
 
-    public function setIdPobocka(int $id_pobocka): void{
-        $this->id_pobocka = $id_pobocka;
+    public function setIdPobocka(int $id): void{
+        $this->id= $id;
     }
 
     public function setCisloPopisne(int $cislo_popisne): void{
@@ -79,4 +100,5 @@ class Pobocka{
     public function setJmenoVedouciho(string $jmeno_vedouciho): void{
         $this->jmeno_vedouciho = $jmeno_vedouciho;
     }
+
 }

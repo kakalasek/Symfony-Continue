@@ -74,7 +74,7 @@ class Pobocka{
         return $this->jmeno_vedouciho;
     }
 
-    public function setIdPobocka(int $id): void{
+    public function setId(int $id): void{
         $this->id= $id;
     }
 
